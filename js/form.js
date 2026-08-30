@@ -566,22 +566,115 @@ function configurarFormulario(form) {
                         "arquivo"
                     );
 
+/*
+ * ============================================================
+ * SALVAR ARQUIVO PDF
+ * ============================================================
+ */
 
-                if (
-                    arquivo &&
-                    arquivo.files.length > 0
-                ) {
-
-                    projeto.arquivoNome =
-                        arquivo.files[0].name;
-
-                }
+const arquivoInput =
+    document.getElementById(
+        "arquivo"
+    );
 
 
-                const novoProjeto =
-                    adicionarProjeto(
-                        projeto
-                    );
+if (
+    arquivoInput &&
+    arquivoInput.files.length > 0
+) {
+
+    const arquivoSelecionado =
+        arquivoInput.files[0];
+
+
+    /*
+     * Verifica se é realmente PDF.
+     */
+
+    if (
+        arquivoSelecionado.type !==
+        "application/pdf"
+    ) {
+
+        mostrarMensagem(
+            "O arquivo selecionado precisa ser um PDF.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Limite de segurança para o protótipo.
+     *
+     * 50 MB é suficiente para trabalhos acadêmicos
+     * e evita armazenamento exagerado no navegador.
+     */
+
+    const limite =
+        50 * 1024 * 1024;
+
+
+    if (
+        arquivoSelecionado.size >
+        limite
+    ) {
+
+        mostrarMensagem(
+            "O PDF não pode ultrapassar 50 MB.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    projeto.arquivoNome =
+        arquivoSelecionado.name;
+
+}
+
+    
+/*
+ * ----------------------------------------------------------
+ * SALVA O PROJETO
+ * ----------------------------------------------------------
+ */
+
+const novoProjeto =
+    adicionarProjeto(
+        projeto
+    );
+
+
+/*
+ * ----------------------------------------------------------
+ * SALVA O PDF NO INDEXEDDB
+ * ----------------------------------------------------------
+ *
+ * O PDF precisa usar o mesmo ID do projeto.
+ */
+
+if (
+    arquivoInput &&
+    arquivoInput.files.length > 0
+) {
+
+    const arquivoSelecionado =
+        arquivoInput.files[0];
+
+
+    await salvarPDF(
+        novoProjeto.id,
+        arquivoSelecionado
+    );
+
+}
+
+
 
 
                 mostrarMensagem(

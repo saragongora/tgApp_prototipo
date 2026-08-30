@@ -56,17 +56,23 @@ let filtrosAtuais = {
 
 function iniciarAplicacao() {
 
-    projetos = carregarProjetos();
+    if (typeof carregarProjetos !== "function") {
 
+        console.error(
+            "ERRO: storage.js não foi carregado."
+        );
+
+        return;
+
+    }
+
+    projetos = carregarProjetos();
 
     preencherAnos();
 
-
     configurarEventos();
 
-
-    renderizarProjetos();
-
+    // Não renderiza projetos inicialmente.
 }
 
 
@@ -621,7 +627,7 @@ function renderizarProjetos() {
 
 /*
  * ============================================================
- * CRIAR CARD
+ * CRIAR CARD DO PROJETO
  * ============================================================
  */
 
@@ -632,106 +638,199 @@ function criarCardProjeto(projeto) {
 
 
     card.className =
-        "card-result";
+        "projeto-card";
 
+
+    /*
+     * ----------------------------------------------------------
+     * Informações do projeto
+     * ----------------------------------------------------------
+     */
 
     const tipo =
         tiposTrabalho[projeto.tipo]
         || projeto.tipo
-        || "TRABALHO";
+        || "Não informado";
 
 
     const orientadores =
-        projeto.orientadores.length
+        Array.isArray(projeto.orientadores)
             ? projeto.orientadores.join(", ")
-            : "Não informado";
+            : projeto.orientadores || "Não informado";
 
 
     const alunos =
-        projeto.alunos.length
+        Array.isArray(projeto.alunos)
             ? projeto.alunos.join(", ")
-            : "Não informado";
+            : projeto.alunos || "Não informado";
 
+
+    /*
+     * ----------------------------------------------------------
+     * HTML DO CARD
+     * ----------------------------------------------------------
+     */
 
     card.innerHTML = `
 
-        <div class="card-header">
+        <div class="projeto-card-conteudo">
 
-            <p class="titulo">
+            <div class="projeto-card-principal">
 
-                <strong>
-                    ${escapeHTML(tipo.toUpperCase())}
-                    -
+                <h2 class="projeto-titulo">
                     ${escapeHTML(projeto.nome_tg)}
-                </strong>
-
-            </p>
-
-            <span class="ano-semestre">
-
-                ${escapeHTML(projeto.ano)}
-                -
-                ${escapeHTML(projeto.semestre)}
-
-            </span>
-
-        </div>
+                </h2>
 
 
-        <div class="card-body-footer">
+                <div class="projeto-info">
 
-            <div class="card-texts">
+                    <p>
+                        <strong>Tipo:</strong>
+                        ${escapeHTML(tipo)}
+                    </p>
 
-                <p>
-                    Orientador:
-                    ${escapeHTML(orientadores)}
-                </p>
 
-                <p>
-                    Alunos:
-                    ${escapeHTML(alunos)}
-                </p>
+                    <p>
+                        <strong>Curso:</strong>
+                        ${escapeHTML(projeto.curso)}
+                    </p>
 
-                <p>
-                    Curso:
-                    ${escapeHTML(projeto.curso)}
-                </p>
+
+                    <p>
+                        <strong>Ano:</strong>
+                        ${escapeHTML(projeto.ano)}
+                        <span class="separador">•</span>
+                        <strong>Semestre:</strong>
+                        ${escapeHTML(projeto.semestre)}
+                    </p>
+
+
+                    <p>
+                        <strong>Orientador(es):</strong>
+                        ${escapeHTML(orientadores)}
+                    </p>
+
+
+                    <p>
+                        <strong>Aluno(s):</strong>
+                        ${escapeHTML(alunos)}
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
 
+            <!--
+                Botão do PDF.
+                Ele fica separado das informações do projeto.
+            -->
 
-        <div class="download-btn">
+            <div class="projeto-pdf-btn">
 
-            <button
-                type="button"
-                title="Visualizar trabalho"
-                aria-label="Visualizar trabalho"
-                data-id="${projeto.id}"
-            >
-
-                <img
-                    src="assets/images/icon_baixar.png"
-                    alt="Visualizar"
-                    width="24"
-                    height="24"
+                <button
+                    type="button"
+                    title="Visualizar PDF"
+                    aria-label="Visualizar PDF"
+                    data-id="${projeto.id}"
                 >
 
-            </button>
+                    <img
+                        src="assets/images/icon_baixar.png"
+                        alt="Visualizar PDF"
+                        width="24"
+                        height="24"
+                    >
+
+                </button>
+
+            </div>
 
         </div>
 
     `;
 
 
+    /*
+     * ----------------------------------------------------------
+     * BOTÃO DO PDF
+     * ----------------------------------------------------------
+     */
+
     const botao =
-        card.querySelector(
-            ".download-btn button"
+    card.querySelector(
+        ".projeto-pdf-btn button"
+    );
+
+
+    if (botao) {
+
+        botao.addEventListener(
+            "click",
+            async function (evento) {
+
+                /*
+                 * Impede que o clique no botão seja
+                 * interpretado como clique no card.
+                 */
+
+                evento.stopPropagation();
+
+
+                try {
+
+                    const possui =
+                        await possuiPDF(
+                            projeto.id
+                        );
+
+
+                    if (!possui) {
+
+                        alert(
+                            "Este trabalho não possui um PDF cadastrado."
+                        );
+
+                        return;
+
+                    }
+
+
+                    await abrirPDF(
+                        projeto.id
+                    );
+
+
+                } catch (erro) {
+
+                    console.error(
+                        "Erro ao abrir o PDF:",
+                        erro
+                    );
+
+
+                    alert(
+                        "Não foi possível abrir o PDF."
+                    );
+
+                }
+
+            }
         );
 
+    }
 
-    botao.addEventListener(
+
+    /*
+     * ----------------------------------------------------------
+     * CLIQUE NO CARD
+     * ----------------------------------------------------------
+     *
+     * O card inteiro pode abrir os detalhes.
+     * O botão de PDF possui comportamento próprio.
+     */
+
+    card.addEventListener(
         "click",
         function () {
 
@@ -746,6 +845,9 @@ function criarCardProjeto(projeto) {
     return card;
 
 }
+
+
+
 
 
 /*
@@ -1241,28 +1343,27 @@ function abrirDetalhes(id) {
         <p>
             <strong>Orientador(es):</strong>
             ${escapeHTML(
-                projeto.orientadores.join(", ")
-            )}
+        projeto.orientadores.join(", ")
+    )}
         </p>
 
         <p>
             <strong>Aluno(s):</strong>
             ${escapeHTML(
-                projeto.alunos.join(", ")
-            )}
+        projeto.alunos.join(", ")
+    )}
         </p>
 
-        ${
-            projeto.arquivoNome
-                ? `
+        ${projeto.arquivoNome
+            ? `
                     <p>
                         <strong>Arquivo:</strong>
                         ${escapeHTML(
-                            projeto.arquivoNome
-                        )}
+                projeto.arquivoNome
+            )}
                     </p>
                   `
-                : ""
+            : ""
         }
 
     `;
