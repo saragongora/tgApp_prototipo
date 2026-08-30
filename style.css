@@ -1,0 +1,1811 @@
+
+/* =========================================================
+   TG APP — ESTILOS PRINCIPAIS
+   Versão protótipo sem backend
+   ========================================================= */
+
+
+/* =========================================================
+   RESET / CONFIGURAÇÕES GERAIS
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f2f2f2;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh;
+
+    margin: 0;
+
+    color: #333;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+   ========================================================= */
+
+.sr-only {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
+.header {
+    background-color: #990000;
+
+    width: 100%;
+
+    min-height: 70px;
+
+    padding: 15px 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* Logo */
+
+.logo-link {
+    display: flex;
+
+    align-items: center;
+
+    text-decoration: none;
+}
+
+.logo-fatec {
+    height: 40px;
+
+    width: auto;
+
+    display: block;
+}
+
+
+/* Botões do cabeçalho */
+
+.header-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.btn-header {
+    background-color: white;
+
+    color: #990000;
+
+    text-decoration: none;
+
+    padding: 7px 12px;
+
+    border-radius: 4px;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn-header:hover {
+    background-color: #f1f1f1;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SUB-CABECALHO
+   ========================================================= */
+
+.sub-header {
+    background-color: #666;
+
+    color: white;
+
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 10px 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CONTEÚDO PRINCIPAL
+   ========================================================= */
+
+.main-content {
+    width: 100%;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+/* =========================================================
+   ÁREA DE PESQUISA
+   ========================================================= */
+
+.search-container {
+    width: 100%;
+
+    height: 75vh;
+
+    min-height: 450px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition:
+        height 0.4s ease,
+        margin 0.4s ease,
+        transform 0.4s ease;
+}
+
+
+/* Quando existem resultados,
+   a área de pesquisa sobe */
+
+.search-container.top {
+    height: auto;
+
+    margin-top: 30px;
+
+    margin-bottom: 5px;
+
+    justify-content: flex-start;
+}
+
+
+/* Título */
+
+.search-title {
+    font-size: 16px;
+
+    font-weight: 700;
+
+    margin: 0 0 3px 0;
+
+    text-align: center;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+/* Texto abaixo do título */
+
+.sub-text {
+    font-size: 14px;
+
+    color: #777;
+
+    opacity: 0.8;
+
+    margin: 0 0 20px 0;
+
+    text-align: center;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+/* Esconder textos quando a pesquisa sobe */
+
+.search-container.top .search-title,
+.search-container.top .sub-text {
+    opacity: 0;
+
+    transform: translateY(-10px);
+
+    height: 0;
+
+    overflow: hidden;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+/* =========================================================
+   BARRA DE PESQUISA
+   ========================================================= */
+
+.search-bar {
+    position: relative;
+
+    width: 650px;
+
+    max-width: calc(100% - 40px);
+
+    margin: 0;
+}
+
+
+/* Campo */
+
+.search-bar input {
+    width: 100%;
+
+    height: 42px;
+
+    margin: 0;
+
+    padding: 9px 48px 9px 14px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 15px;
+
+    background-color: white;
+
+    color: #333;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search-bar input:focus {
+    border-color: #990000;
+
+    box-shadow: 0 0 0 2px rgba(153, 0, 0, 0.08);
+}
+
+
+/* Botão da lupa */
+
+.search-icon {
+    position: absolute;
+
+    right: 8px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 32px;
+
+    height: 32px;
+
+    padding: 4px;
+
+    margin: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+.search-icon img {
+    width: 23px;
+
+    height: 23px;
+
+    object-fit: contain;
+}
+
+.search-icon:hover {
+    opacity: 0.7;
+}
+
+
+/* =========================================================
+   RESULTADOS
+   ========================================================= */
+
+.results-section {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding-bottom: 40px;
+}
+
+
+/* Mensagem */
+
+.linha-mensagem {
+    width: 730px;
+
+    max-width: calc(100% - 40px);
+
+    margin-top: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.mensagem-resultado {
+    margin: 0;
+
+    font-size: 16px;
+
+    color: #333;
+}
+
+
+/* Botão Filtrar */
+
+.link-filtrar {
+    background: transparent;
+
+    border: none;
+
+    padding: 0;
+
+    color: #333;
+
+    text-decoration: underline;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.link-filtrar:hover {
+    color: #990000;
+}
+
+
+/* =========================================================
+   CARDS DOS TRABALHOS
+   ========================================================= */
+
+.resultados {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+/* Card */
+
+.card-result {
+    width: 700px;
+
+    max-width: calc(100% - 40px);
+
+    margin-top: 15px;
+
+    padding: 24px;
+
+    position: relative;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.1);
+
+    font-family: 'Roboto', sans-serif;
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.card-result:hover {
+    box-shadow:
+        0 6px 15px rgba(0, 0, 0, 0.13);
+}
+
+
+/* Cabeçalho do card */
+
+.card-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 8px;
+}
+
+
+/* Título */
+
+.titulo {
+    margin: 0;
+
+    font-size: 1rem;
+
+    line-height: 1.4;
+
+    font-weight: 700;
+
+    color: #333;
+}
+
+
+/* Ano */
+
+.ano-semestre {
+    flex-shrink: 0;
+
+    font-size: 0.9rem;
+
+    color: #555;
+}
+
+
+/* Corpo */
+
+.card-body-footer {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    margin-top: 8px;
+
+    padding-right: 45px;
+}
+
+
+/* Informações */
+
+.card-texts p {
+    margin: 4px 0;
+
+    font-size: 0.95rem;
+
+    line-height: 1.4;
+
+    color: #444;
+}
+
+
+/* =========================================================
+   BOTÃO DOWNLOAD
+   ========================================================= */
+
+.download-btn {
+    position: absolute;
+
+    right: 20px;
+
+    bottom: 20px;
+}
+
+.download-btn button,
+.download-btn a {
+    width: 30px;
+
+    height: 30px;
+
+    padding: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.download-btn img {
+    width: 24px;
+
+    height: 24px;
+
+    object-fit: contain;
+}
+
+.download-btn button:hover,
+.download-btn a:hover {
+    transform: scale(1.1);
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+   ========================================================= */
+
+.empty-state {
+    display: none;
+
+    width: 700px;
+
+    max-width: calc(100% - 40px);
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   PAGINAÇÃO
+   ========================================================= */
+
+.pagination {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    margin-top: 25px;
+}
+
+.pagination a,
+.pagination button {
+    min-width: 34px;
+
+    height: 34px;
+
+    padding: 0 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #ccc;
+
+    border-radius: 4px;
+
+    background: white;
+
+    color: #333;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.pagination a:hover,
+.pagination button:hover {
+    border-color: #990000;
+
+    color: #990000;
+}
+
+.pagination .active {
+    background-color: #990000;
+
+    border-color: #990000;
+
+    color: white;
+
+    cursor: default;
+}
+
+
+/* =========================================================
+   MODAL DE FILTROS
+   ========================================================= */
+
+.modal-filtro-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.modal-filtro-overlay.active {
+    display: flex;
+}
+
+
+/* Conteúdo */
+
+.modal-filtro-conteudo {
+    position: relative;
+
+    width: 500px;
+
+    max-width: 100%;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-filtro-conteudo h2 {
+    margin: 0 0 25px 0;
+
+    color: #990000;
+
+    font-size: 20px;
+
+    text-align: center;
+}
+
+
+/* Botão fechar */
+
+.modal-close {
+    position: absolute;
+
+    top: 10px;
+
+    right: 15px;
+
+    width: 32px;
+
+    height: 32px;
+
+    padding: 0;
+
+    background: transparent;
+
+    color: #555;
+
+    border: none;
+
+    font-size: 28px;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #990000;
+}
+
+
+/* =========================================================
+   CAMPOS DO FILTRO
+   ========================================================= */
+
+.campo-duplo {
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 15px;
+}
+
+.campo-item {
+    flex: 1;
+}
+
+.filter-field {
+    width: 100%;
+
+    margin-bottom: 15px;
+}
+
+.modal-filtro-conteudo label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-weight: 700;
+
+    font-size: 14px;
+}
+
+.modal-filtro-conteudo select {
+    width: 100%;
+
+    height: 38px;
+
+    padding: 6px 10px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    background-color: white;
+
+    color: #333;
+
+    outline: none;
+}
+
+.modal-filtro-conteudo select:focus {
+    border-color: #990000;
+}
+
+
+/* =========================================================
+   LIMPAR FILTROS
+   ========================================================= */
+
+.limpar-container {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: -3px;
+
+    margin-bottom: 20px;
+}
+
+.btn-limpar {
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+
+    color: #555;
+
+    text-decoration: underline;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+.btn-limpar:hover {
+    color: #990000;
+}
+
+
+/* =========================================================
+   BOTÕES DO MODAL
+   ========================================================= */
+
+.botoes-modal {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.botoes-modal button {
+    min-width: 120px;
+
+    height: 40px;
+
+    padding: 0 15px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: #990000;
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+.botoes-modal button:hover {
+    background-color: #7d0000;
+}
+
+.botoes-modal .btn-modal-cancelar {
+    background-color: #666;
+}
+
+.botoes-modal .btn-modal-cancelar:hover {
+    background-color: #555;
+}
+
+
+/* =========================================================
+   MODAL DE DETALHES
+   ========================================================= */
+
+.details-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1100;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.details-modal-overlay.active {
+    display: flex;
+}
+
+.details-modal-content {
+    position: relative;
+
+    width: 700px;
+
+    max-width: 100%;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE — TABLETS
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .header {
+        padding: 15px 30px;
+    }
+
+    .sub-header {
+        padding-left: 30px;
+    }
+
+    .search-bar {
+        width: 600px;
+    }
+
+    .card-result {
+        width: 90%;
+    }
+
+    .linha-mensagem {
+        width: 90%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE — CELULARES
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* Cabeçalho */
+
+    .header {
+        min-height: 65px;
+
+        padding: 14px 20px;
+    }
+
+    .logo-fatec {
+        height: 36px;
+    }
+
+    /*
+       No celular, mantemos apenas o ícone para a área
+       administrativa. O ícone será aplicado pelo CSS.
+    */
+
+    .header-buttons {
+        gap: 5px;
+    }
+
+    .btn-admin {
+        width: 36px;
+
+        height: 36px;
+
+        padding: 0;
+
+        font-size: 0;
+
+        color: transparent;
+
+        background-color: transparent;
+
+        background-image: url("assets/images/icon_add.png");
+
+        background-repeat: no-repeat;
+
+        background-position: center;
+
+        background-size: 24px;
+    }
+
+    .btn-admin:hover {
+        background-color: transparent;
+    }
+
+
+    /* Sub-header */
+
+    .sub-header {
+        min-height: 38px;
+
+        padding: 9px 20px;
+
+        justify-content: center;
+
+        text-align: center;
+
+        font-size: 12px;
+    }
+
+
+    /* Pesquisa */
+
+    .search-container {
+        width: 100%;
+
+        min-height: 400px;
+
+        height: 70vh;
+
+        padding: 15px 20px;
+    }
+
+    .search-title {
+        max-width: 95%;
+
+        font-size: 14px;
+
+        line-height: 1.4;
+    }
+
+    .sub-text {
+        font-size: 12px;
+
+        margin-bottom: 10px;
+    }
+
+    .search-bar {
+        width: 100%;
+
+        max-width: 90%;
+    }
+
+    .search-bar input {
+        height: 38px;
+
+        font-size: 14px;
+
+        padding: 8px 42px 8px 12px;
+    }
+
+    .search-icon {
+        right: 6px;
+
+        width: 30px;
+
+        height: 30px;
+    }
+
+    .search-icon img {
+        width: 20px;
+
+        height: 20px;
+    }
+
+
+    /* Quando a pesquisa está no topo */
+
+    .search-container.top {
+        margin-top: 20px;
+
+        align-items: center;
+    }
+
+
+    /* Mensagem */
+
+    .linha-mensagem {
+        width: 90%;
+
+        max-width: 90%;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+
+        margin-top: 20px;
+    }
+
+    .mensagem-resultado {
+        width: 100%;
+
+        font-size: 14px;
+
+        text-align: center;
+    }
+
+    .link-filtrar {
+        width: 100%;
+
+        font-size: 14px;
+
+        text-align: center;
+    }
+
+
+    /* Cards */
+
+    .card-result {
+        width: 80%;
+
+        max-width: 80%;
+
+        padding: 16px;
+
+        margin-top: 15px;
+    }
+
+    .card-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+    .titulo {
+        font-size: 0.95rem;
+    }
+
+    .ano-semestre {
+        font-size: 0.85rem;
+    }
+
+    .card-body-footer {
+        padding-right: 35px;
+
+        align-items: flex-start;
+    }
+
+    .card-texts p {
+        font-size: 0.88rem;
+
+        word-break: break-word;
+    }
+
+    .download-btn {
+        right: 10px;
+
+        bottom: 12px;
+    }
+
+
+    /* Modal */
+
+    .modal-filtro-conteudo,
+    .details-modal-content {
+        width: 95%;
+
+        padding: 25px 20px;
+    }
+
+    .campo-duplo {
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+    .botoes-modal {
+        flex-direction: column;
+    }
+
+    .botoes-modal button {
+        width: 100%;
+    }
+
+
+    /* Paginação */
+
+    .pagination {
+        max-width: 90%;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .header {
+        padding: 12px 15px;
+    }
+
+    .sub-header {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .card-result {
+        width: 90%;
+
+        max-width: 90%;
+
+        padding: 14px;
+    }
+
+    .search-bar {
+        max-width: 95%;
+    }
+
+}
+
+/* =========================================================
+   PÁGINA DE FORMULÁRIO
+   ========================================================= */
+
+.form-page {
+    width: 100%;
+
+    flex: 1;
+
+    padding: 45px 20px 60px;
+}
+
+
+.form-container {
+    width: 700px;
+
+    max-width: 100%;
+
+    margin: 0 auto;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================================================
+   TÍTULO DO FORMULÁRIO
+   ========================================================= */
+
+.form-title {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+
+.form-title h1 {
+    margin: 0 0 8px;
+
+    color: #990000;
+
+    font-size: 24px;
+}
+
+
+.form-title p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SEÇÕES
+   ========================================================= */
+
+.form-section {
+    padding: 25px 0;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+
+.form-section:first-of-type {
+    border-top: none;
+
+    padding-top: 0;
+}
+
+
+.form-section h2 {
+    margin: 0 0 20px;
+
+    color: #444;
+
+    font-size: 18px;
+}
+
+
+.form-description {
+    margin: -10px 0 20px;
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.form-field {
+    width: 100%;
+
+    margin-bottom: 18px;
+}
+
+
+.form-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #444;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.required {
+    color: #990000;
+}
+
+
+.form-field input,
+.form-field select,
+.dynamic-field input {
+    width: 100%;
+
+    height: 40px;
+
+    padding: 8px 11px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    background-color: white;
+
+    color: #333;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.form-field input:focus,
+.form-field select:focus,
+.dynamic-field input:focus {
+    border-color: #990000;
+
+    box-shadow:
+        0 0 0 2px rgba(153, 0, 0, 0.08);
+}
+
+
+.form-row {
+    display: flex;
+
+    gap: 20px;
+}
+
+
+.form-row .form-field {
+    flex: 1;
+}
+
+
+/* =========================================================
+   CABEÇALHO DAS SEÇÕES DINÂMICAS
+   ========================================================= */
+
+.section-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 15px;
+}
+
+
+.section-heading h2 {
+    margin-bottom: 5px;
+}
+
+
+.section-heading p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTÃO ADICIONAR
+   ========================================================= */
+
+.btn-add-item {
+    flex-shrink: 0;
+
+    padding: 8px 13px;
+
+    border: 1px solid #990000;
+
+    border-radius: 5px;
+
+    background-color: white;
+
+    color: #990000;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.btn-add-item:hover {
+    background-color: #990000;
+
+    color: white;
+}
+
+
+/* =========================================================
+   CAMPOS DINÂMICOS
+   ========================================================= */
+
+.dynamic-fields {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.dynamic-field {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.dynamic-field input {
+    flex: 1;
+}
+
+
+/* =========================================================
+   REMOVER ITEM
+   ========================================================= */
+
+.btn-remove-item {
+    flex-shrink: 0;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    background-color: white;
+
+    color: #777;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.btn-remove-item:hover {
+    border-color: #990000;
+
+    color: #990000;
+}
+
+
+/* =========================================================
+   UPLOAD
+   ========================================================= */
+
+.file-upload {
+    width: 100%;
+}
+
+
+.file-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding: 0 18px;
+
+    border: 1px solid #990000;
+
+    border-radius: 5px;
+
+    color: #990000;
+
+    background-color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.file-label:hover {
+    background-color: #990000;
+
+    color: white;
+}
+
+
+.file-label input {
+    display: none;
+}
+
+
+.file-name {
+    margin: 10px 0 0;
+
+    color: #777;
+
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   MENSAGEM
+   ========================================================= */
+
+.form-message {
+    display: none;
+
+    padding: 12px 15px;
+
+    margin-top: 10px;
+
+    border-radius: 5px;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+
+.form-message.success {
+    display: block;
+
+    background-color: #e8f5e9;
+
+    color: #2e7d32;
+}
+
+
+.form-message.error {
+    display: block;
+
+    background-color: #ffebee;
+
+    color: #c62828;
+}
+
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.form-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+
+.btn-cancel,
+.btn-submit {
+    min-width: 130px;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 5px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+
+.btn-cancel {
+    border: 1px solid #aaa;
+
+    background-color: white;
+
+    color: #666;
+}
+
+
+.btn-cancel:hover {
+    background-color: #f3f3f3;
+}
+
+
+.btn-submit {
+    border: 1px solid #990000;
+
+    background-color: #990000;
+
+    color: white;
+}
+
+
+.btn-submit:hover {
+    background-color: #7d0000;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE DO FORMULÁRIO
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .form-page {
+        padding: 25px 15px 40px;
+    }
+
+
+    .form-container {
+        padding: 25px 20px;
+    }
+
+
+    .form-title h1 {
+        font-size: 20px;
+    }
+
+
+    .form-row {
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+
+    .section-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .btn-add-item {
+        width: 100%;
+    }
+
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+
+    .btn-cancel,
+    .btn-submit {
+        width: 100%;
+    }
+
+}
+

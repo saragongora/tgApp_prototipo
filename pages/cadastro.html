@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="TG App - Cadastro de Trabalho de Graduação"
+    >
+
+    <title>TG App | Novo Trabalho</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../style.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- =====================================================
+         CABEÇALHO
+         ===================================================== -->
+
+    <header class="header">
+
+        <a
+            href="../index.html"
+            class="logo-link"
+            aria-label="Página inicial"
+        >
+
+            <img
+                src="../assets/images/logoFatec.png"
+                alt="Logo da Fatec"
+                class="logo-fatec"
+            >
+
+        </a>
+
+
+        <div class="header-buttons">
+
+            <a
+                href="../index.html"
+                class="btn-header"
+            >
+                Voltar
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         IDENTIFICAÇÃO DA FACULDADE
+         ===================================================== -->
+
+    <div class="sub-header">
+
+        Faculdade de Tecnologia José Crespo Gonzales
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTEÚDO
+         ===================================================== -->
+
+    <main class="form-page">
+
+        <div class="form-container">
+
+
+            <!-- Título -->
+
+            <div class="form-title">
+
+                <h1>
+                    Novo Trabalho de Graduação
+                </h1>
+
+                <p>
+                    Preencha os dados do trabalho
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORMULÁRIO
+                 ================================================= -->
+
+            <form
+                id="cadastroForm"
+                class="tg-form"
+            >
+
+
+                <!-- =============================================
+                     DADOS DO TRABALHO
+                     ============================================= -->
+
+                <section class="form-section">
+
+                    <h2>
+                        Dados do trabalho
+                    </h2>
+
+
+                    <!-- Nome -->
+
+                    <div class="form-field">
+
+                        <label for="nome_tg">
+                            Nome do trabalho
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nome_tg"
+                            name="nome_tg"
+                            placeholder="Digite o nome do trabalho"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Tipo -->
+
+                    <div class="form-field">
+
+                        <label for="tipo">
+                            Tipo de trabalho
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="tipo"
+                            name="tipo"
+                            required
+                        >
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="pi">
+                                Projeto Integrador
+                            </option>
+
+                            <option value="tg">
+                                Trabalho de Graduação
+                            </option>
+
+                            <option value="ic">
+                                Iniciação Científica
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Curso -->
+
+                    <div class="form-field">
+
+                        <label for="curso">
+                            Curso
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="curso"
+                            name="curso"
+                            required
+                        >
+
+                            <option value="">
+                                Selecione o curso
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Ano / Semestre -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-field">
+
+                            <label for="ano">
+                                Ano
+                                <span class="required">*</span>
+                            </label>
+
+                            <select
+                                id="ano"
+                                name="ano"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="semestre">
+                                Semestre
+                                <span class="required">*</span>
+                            </label>
+
+                            <select
+                                id="semestre"
+                                name="semestre"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="1">
+                                    1º semestre
+                                </option>
+
+                                <option value="2">
+                                    2º semestre
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================================
+                     ORIENTADORES
+                     ============================================= -->
+
+                <section class="form-section">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <h2>
+                                Orientadores
+                            </h2>
+
+                            <p>
+                                Adicione um ou mais orientadores.
+                            </p>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="btn-add-item"
+                            id="addOrientador"
+                        >
+                            + Adicionar
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="orientadoresContainer"
+                        class="dynamic-fields"
+                    >
+
+                        <div class="dynamic-field">
+
+                            <input
+                                type="text"
+                                name="orientadores[]"
+                                placeholder="Nome do orientador"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="btn-remove-item"
+                                title="Remover orientador"
+                                aria-label="Remover orientador"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================================
+                     ALUNOS
+                     ============================================= -->
+
+                <section class="form-section">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <h2>
+                                Alunos
+                            </h2>
+
+                            <p>
+                                Adicione os alunos participantes.
+                            </p>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="btn-add-item"
+                            id="addAluno"
+                        >
+                            + Adicionar
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="alunosContainer"
+                        class="dynamic-fields"
+                    >
+
+                        <div class="dynamic-field">
+
+                            <input
+                                type="text"
+                                name="alunos[]"
+                                placeholder="Nome do aluno"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="btn-remove-item"
+                                title="Remover aluno"
+                                aria-label="Remover aluno"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================================
+                     ARQUIVO
+                     ============================================= -->
+
+                <section class="form-section">
+
+                    <h2>
+                        Trabalho em PDF
+                    </h2>
+
+                    <p class="form-description">
+                        Opcionalmente, selecione o arquivo PDF
+                        correspondente ao trabalho.
+                    </p>
+
+
+                    <div class="file-upload">
+
+                        <label
+                            for="arquivo"
+                            class="file-label"
+                        >
+
+                            <span>
+                                Selecionar arquivo PDF
+                            </span>
+
+                            <input
+                                type="file"
+                                id="arquivo"
+                                name="arquivo"
+                                accept="application/pdf,.pdf"
+                            >
+
+                        </label>
+
+
+                        <p
+                            id="arquivoNome"
+                            class="file-name"
+                        >
+                            Nenhum arquivo selecionado.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================================
+                     MENSAGEM
+                     ============================================= -->
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                    role="alert"
+                ></div>
+
+
+                <!-- =============================================
+                     BOTÕES
+                     ============================================= -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="../index.html"
+                        class="btn-cancel"
+                    >
+                        Cancelar
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn-submit"
+                    >
+                        Salvar trabalho
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="../js/data.js"></script>
+
+    <script src="../js/storage.js"></script>
+
+    <script src="../js/form.js"></script>
+
+</body>
+
+</html>
+
