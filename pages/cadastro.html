@@ -483,6 +483,77 @@
 
     </main>
 
+    <!-- =====================================================
+     MODAL — AVISO DO PROTÓTIPO
+     ===================================================== -->
+
+<div
+    id="prototypeModal"
+    class="prototype-modal"
+    aria-hidden="false"
+>
+
+    <div
+        class="prototype-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="prototypeTitle"
+    >
+
+        <button
+            type="button"
+            class="prototype-close"
+            id="prototypeClose"
+            aria-label="Fechar aviso"
+        >
+            ×
+        </button>
+
+
+        <div class="prototype-icon">
+            !
+        </div>
+
+
+        <div class="prototype-content">
+
+            <h2 id="prototypeTitle">
+                Versão de demonstração
+            </h2>
+
+            <p>
+                Esta é uma versão de demonstração/protótipo
+                do TG App original.
+            </p>
+
+            <p>
+                Para funcionar sem um servidor ou banco de
+                dados externo, os dados cadastrados são
+                armazenados localmente no navegador.
+            </p>
+
+            <p>
+                Para conhecer o projeto original e sua
+                implementação completa, acesse o GitHub.
+            </p>
+
+
+            <a
+                href="https://github.com/saragongora/tgApp"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="prototype-github"
+            >
+                Ver projeto original no GitHub
+                <span>↗</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
 
    <!-- =====================================================
      JAVASCRIPT
@@ -495,6 +566,10 @@
 <script src="../js/fileStorage.js"></script>
 
 <script src="../js/form.js"></script>
+
+<script src="../js/prototypeModal.js"></script>
+
+
 
 </body>
 

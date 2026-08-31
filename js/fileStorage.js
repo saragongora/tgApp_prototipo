@@ -1,4 +1,3 @@
-
 /*
  * ============================================================
  * TG APP — ARMAZENAMENTO DE ARQUIVOS
@@ -9,19 +8,27 @@
  * O localStorage continua sendo utilizado para os dados
  * textuais dos projetos.
  *
- * IndexedDB:
- * - suporta arquivos maiores;
- * - é próprio para armazenamento estruturado;
- * - funciona diretamente no navegador;
- * - não exige servidor ou banco de dados externo.
+ * Os PDFs podem vir de duas fontes:
+ *
+ * 1. PDFs pré-cadastrados no projeto;
+ * 2. PDFs enviados pelo usuário através do formulário.
+ *
+ * Os dois tipos são armazenados da mesma maneira no
+ * IndexedDB e ficam associados ao ID do projeto.
  * ============================================================
  */
+
 
 const FILE_DB_NAME = "tgAppFiles";
 
 const FILE_DB_VERSION = 1;
 
 const FILE_STORE_NAME = "pdfs";
+
+const FILE_CONFIG_STORE = "config";
+
+const PDF_INICIAIS_IMPORTADOS =
+    "pdfsIniciaisImportados";
 
 
 /*
@@ -42,17 +49,16 @@ function abrirBancoArquivos() {
                 );
 
 
-            /*
-             * Executado somente na primeira criação
-             * ou quando a versão do banco muda.
-             */
-
             request.onupgradeneeded =
                 function (evento) {
 
                     const db =
                         evento.target.result;
 
+
+                    /*
+                     * Store dos arquivos PDF.
+                     */
 
                     if (
                         !db.objectStoreNames.contains(
@@ -64,6 +70,29 @@ function abrirBancoArquivos() {
                             FILE_STORE_NAME,
                             {
                                 keyPath: "projetoId"
+                            }
+                        );
+
+                    }
+
+
+                    /*
+                     * Store de configurações.
+                     *
+                     * Usada para registrar se os PDFs
+                     * iniciais já foram importados.
+                     */
+
+                    if (
+                        !db.objectStoreNames.contains(
+                            FILE_CONFIG_STORE
+                        )
+                    ) {
+
+                        db.createObjectStore(
+                            FILE_CONFIG_STORE,
+                            {
+                                keyPath: "chave"
                             }
                         );
 
@@ -110,7 +139,7 @@ async function salvarPDF(
 
     if (!arquivo) {
 
-        return;
+        return false;
 
     }
 
@@ -145,7 +174,8 @@ async function salvarPDF(
                         arquivo.name,
 
                     tipo:
-                        arquivo.type,
+                        arquivo.type ||
+                        "application/pdf",
 
                     tamanho:
                         arquivo.size,
@@ -222,7 +252,8 @@ async function obterPDF(
                 function () {
 
                     resolve(
-                        request.result || null
+                        request.result ||
+                        null
                     );
 
                 };
@@ -333,47 +364,65 @@ async function abrirPDF(
     projetoId
 ) {
 
-    const registro =
-        await obterPDF(
-            projetoId
+    try {
+
+        const registro =
+            await obterPDF(
+                projetoId
+            );
+
+
+        if (!registro) {
+
+            alert(
+                "Este trabalho não possui um PDF cadastrado."
+            );
+
+            return;
+
+        }
+
+
+        const url =
+            URL.createObjectURL(
+                registro.arquivo
+            );
+
+
+        window.open(
+            url,
+            "_blank"
         );
 
 
-    if (!registro) {
+        /*
+         * Libera o objeto depois de 60 segundos.
+         */
+
+        setTimeout(
+            function () {
+
+                URL.revokeObjectURL(
+                    url
+                );
+
+            },
+            60000
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao abrir PDF:",
+            erro
+        );
+
 
         alert(
-            "Este trabalho não possui um PDF cadastrado."
+            "Não foi possível abrir o PDF."
         );
-
-        return;
 
     }
-
-
-    const url =
-        URL.createObjectURL(
-            registro.arquivo
-        );
-
-
-    window.open(
-        url,
-        "_blank"
-    );
-
-
-    /*
-     * Libera o objeto depois de um tempo.
-     */
-
-    setTimeout(
-        function () {
-
-            URL.revokeObjectURL(url);
-
-        },
-        60000
-    );
 
 }
 
@@ -388,63 +437,417 @@ async function baixarPDF(
     projetoId
 ) {
 
-    const registro =
-        await obterPDF(
-            projetoId
+    try {
+
+        const registro =
+            await obterPDF(
+                projetoId
+            );
+
+
+        if (!registro) {
+
+            alert(
+                "Este trabalho não possui um PDF cadastrado."
+            );
+
+            return;
+
+        }
+
+
+        const url =
+            URL.createObjectURL(
+                registro.arquivo
+            );
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.href =
+            url;
+
+
+        link.download =
+            registro.nome ||
+            `trabalho-${projetoId}.pdf`;
+
+
+        document.body.appendChild(
+            link
         );
 
 
-    if (!registro) {
+        link.click();
+
+
+        link.remove();
+
+
+        setTimeout(
+            function () {
+
+                URL.revokeObjectURL(
+                    url
+                );
+
+            },
+            1000
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao baixar PDF:",
+            erro
+        );
+
 
         alert(
-            "Este trabalho não possui um PDF cadastrado."
+            "Não foi possível baixar o PDF."
         );
-
-        return;
 
     }
 
-
-    const url =
-        URL.createObjectURL(
-            registro.arquivo
-        );
+}
 
 
-    const link =
-        document.createElement(
-            "a"
-        );
+/*
+ * ============================================================
+ * VERIFICAR IMPORTAÇÃO DOS PDFs INICIAIS
+ * ============================================================
+ */
+
+async function pdfsIniciaisJaImportados() {
+
+    const db =
+        await abrirBancoArquivos();
 
 
-    link.href =
-        url;
+    return new Promise(
+        (resolve, reject) => {
+
+            const transaction =
+                db.transaction(
+                    FILE_CONFIG_STORE,
+                    "readonly"
+                );
 
 
-    link.download =
-        registro.nome ||
-        `trabalho-${projetoId}.pdf`;
+            const store =
+                transaction.objectStore(
+                    FILE_CONFIG_STORE
+                );
 
 
-    document.body.appendChild(
-        link
-    );
+            const request =
+                store.get(
+                    PDF_INICIAIS_IMPORTADOS
+                );
 
 
-    link.click();
+            request.onsuccess =
+                function () {
+
+                    resolve(
+                        Boolean(
+                            request.result
+                        )
+                    );
+
+                };
 
 
-    link.remove();
+            request.onerror =
+                function () {
 
+                    reject(
+                        request.error
+                    );
 
-    setTimeout(
-        function () {
+                };
 
-            URL.revokeObjectURL(url);
-
-        },
-        1000
+        }
     );
 
 }
 
+
+/*
+ * ============================================================
+ * MARCAR PDFs COMO IMPORTADOS
+ * ============================================================
+ */
+
+async function marcarPDFsIniciaisComoImportados() {
+
+    const db =
+        await abrirBancoArquivos();
+
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const transaction =
+                db.transaction(
+                    FILE_CONFIG_STORE,
+                    "readwrite"
+                );
+
+
+            const store =
+                transaction.objectStore(
+                    FILE_CONFIG_STORE
+                );
+
+
+            const request =
+                store.put({
+
+                    chave:
+                        PDF_INICIAIS_IMPORTADOS,
+
+                    data:
+                        new Date().toISOString()
+
+                });
+
+
+            request.onsuccess =
+                function () {
+
+                    resolve(true);
+
+                };
+
+
+            request.onerror =
+                function () {
+
+                    reject(
+                        request.error
+                    );
+
+                };
+
+        }
+    );
+
+}
+
+
+/*
+ * ============================================================
+ * IMPORTAR PDFs INICIAIS
+ * ============================================================
+ *
+ * Procura os PDFs indicados em projetosBase dentro de:
+ *
+ * ../assets/pdfs/
+ *
+ * ou:
+ *
+ * assets/pdfs/
+ *
+ * dependendo da página que executar a função.
+ * ============================================================
+ */
+
+async function importarPDFsIniciais() {
+
+    try {
+
+        /*
+         * Verifica se a importação já aconteceu.
+         */
+
+        const importados =
+            await pdfsIniciaisJaImportados();
+
+
+        if (importados) {
+
+            return;
+
+        }
+
+
+        /*
+         * Verifica se existem projetos-base.
+         */
+
+        if (
+            typeof projetosBase ===
+            "undefined"
+        ) {
+
+            console.warn(
+                "projetosBase não foi encontrado."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Percorre os projetos-base.
+         */
+
+        for (
+            const projeto
+            of projetosBase
+        ) {
+
+            if (
+                !projeto.arquivoNome
+            ) {
+
+                continue;
+
+            }
+
+
+            /*
+             * Tenta localizar o PDF.
+             *
+             * Como o caminho depende da página,
+             * usamos uma URL absoluta baseada no
+             * endereço atual do site.
+             */
+
+            const caminhoPDF =
+                obterCaminhoPDF(
+                    projeto.arquivoNome
+                );
+
+
+            try {
+
+                const resposta =
+                    await fetch(
+                        caminhoPDF
+                    );
+
+
+                if (
+                    !resposta.ok
+                ) {
+
+                    console.warn(
+                        `PDF não encontrado: ${projeto.arquivoNome}`
+                    );
+
+                    continue;
+
+                }
+
+
+                const blob =
+                    await resposta.blob();
+
+
+                /*
+                 * Garante que o tipo seja PDF.
+                 */
+
+                const pdf =
+                    new File(
+                        [blob],
+                        projeto.arquivoNome,
+                        {
+                            type:
+                                "application/pdf"
+                        }
+                    );
+
+
+                /*
+                 * Salva usando o mesmo método
+                 * dos PDFs enviados pelo usuário.
+                 */
+
+                await salvarPDF(
+                    projeto.id,
+                    pdf
+                );
+
+
+                console.log(
+                    `PDF importado: ${projeto.arquivoNome}`
+                );
+
+            } catch (erro) {
+
+                console.warn(
+                    `Não foi possível importar ${projeto.arquivoNome}:`,
+                    erro
+                );
+
+            }
+
+        }
+
+
+        /*
+         * Marca a importação como concluída.
+         */
+
+        await marcarPDFsIniciaisComoImportados();
+
+
+        console.log(
+            "Importação dos PDFs iniciais concluída."
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao importar PDFs iniciais:",
+            erro
+        );
+
+    }
+
+}
+
+
+/*
+ * ============================================================
+ * CAMINHO DOS PDFs
+ * ============================================================
+ */
+
+function obterCaminhoPDF(
+    nomeArquivo
+) {
+
+    /*
+     * O projeto possui páginas dentro de
+     * subpastas.
+     *
+     * Usamos ../assets/pdfs/ porque o cadastro.html
+     * está dentro de uma pasta.
+     *
+     * Posteriormente podemos centralizar isso
+     * se houver páginas em níveis diferentes.
+     */
+
+   function obterCaminhoPDF(
+    nomeArquivo
+) {
+
+    return (
+        "assets/pdfs/" +
+        encodeURIComponent(
+            nomeArquivo
+        )
+    );
+
+}
+
+}

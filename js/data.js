@@ -58,29 +58,24 @@ const projetosBase = [
 
         tipo: "pi",
 
-        nome_tg: "Projeto Integrador",
+        nome_tg: "TgApp",
 
         curso: "Análise e Desenvolvimento de Sistemas",
 
-        ano: 2024,
+        ano: 2025,
 
-        semestre: "2",
+        semestre: "1",
 
         orientadores: [
-            "Pedro Tomas Salina",
-            "Glauco Todesco"
+            "Jefferson Blait"
         ],
 
         alunos: [
-            "Felipe Moreira",
-            "Gabriel Paz",
-            "Paloma Garcia Lopes",
-            "Ricardo de Souza Gomes"
+            "Sara da Silva Gongora"
         ],
 
         arquivo: null,
-
-        arquivoNome: "Projeto_Integrador.pdf"
+        arquivoNome: "tgapp_doc.pdf"
     },
 
 
